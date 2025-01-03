@@ -24,11 +24,15 @@ public class BatchProcessor {
         // Run batch processing with schema enforcement
         Map<String, List<AverageData>> averageDataMap = ProcessorUtils.runBatch(sparkSession, saveFile);
 
-        // Save avg_altitude to Cassandra
-        ProcessorUtils.saveAvgToCassandra(averageDataMap.get("avgAltitude"), "avg_altitude_per_country");
+
+
+// Save avg_altitude to Cassandra
+        ProcessorUtils.saveAvgToCassandra(averageDataMap.get("avgAltitude"), "avg_altitude_per_country",
+                new JavaSparkContext(sparkSession.sparkContext()));
 
         // Save avg_longitude to Cassandra
-        ProcessorUtils.saveAvgToCassandra(averageDataMap.get("avgLongitude"), "avg_longitude_per_country");
+        ProcessorUtils.saveAvgToCassandra(averageDataMap.get("avgLongitude"), "avg_longitude_per_country",
+                new JavaSparkContext(sparkSession.sparkContext()));
 
         System.out.println("Batch processing completed and data saved to Cassandra.");
 
