@@ -2,6 +2,7 @@ package tn.enit.tp4;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
@@ -156,10 +157,18 @@ public class ProcessorUtils {
         return averages;
     }
 
-    public static void saveAvgToCassandra(JavaRDD<AverageData> rdd, String tableName) {
+    public static void saveAvgToCassandra(List<AverageData> data, String tableName, JavaSparkContext sc) {
+        System.out.println("Saving averages to Cassandra table: " + tableName);
+
+        // Convert List<AverageData> to JavaRDD<AverageData>
+        JavaRDD<AverageData> rdd = sc.parallelize(data);
+
+        // Use CassandraJavaUtil to save data to Cassandra
         CassandraJavaUtil.javaFunctions(rdd)
                 .writerBuilder("airportkeyspace", tableName, mapToRow(AverageData.class))
                 .saveToCassandra();
+
+        System.out.println("Data successfully saved to Cassandra table: " + tableName);
     }
 
 }
