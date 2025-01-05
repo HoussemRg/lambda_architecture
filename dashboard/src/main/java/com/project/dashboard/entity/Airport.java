@@ -1,13 +1,16 @@
-package tn.enit.tp4.kafka;
+package com.project.dashboard.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.Date;
 
-public class AirportData implements Serializable {
+@Table("airportdata")
+public class Airport implements Serializable {
+    @PrimaryKeyColumn(name = "airportId", type = PrimaryKeyType.PARTITIONED)
     private int airportId;
     private String name;
     private String city;
@@ -24,11 +27,7 @@ public class AirportData implements Serializable {
     private String source;
     private Timestamp created_at;
 
-    public AirportData() {}
-
-    public AirportData(int airportId, String name, String city, String country, String iata, String icao,
-                       double latitude, double longitude, int altitude, int timezone,
-                       String dst, String databaseTimezone, String type, String source, Timestamp  created_at) {
+    public Airport(int airportId, String name, String city, String country, String iata, String icao, double latitude, double longitude, int altitude, int timezone, String dst, String databaseTimezone, String type, String source,Timestamp created_at) {
         this.airportId = airportId;
         this.name = name;
         this.city = city;
@@ -44,6 +43,9 @@ public class AirportData implements Serializable {
         this.type = type;
         this.source = source;
         this.created_at = created_at;
+    }
+
+    public Airport() {
     }
 
     public int getAirportId() {
@@ -94,14 +96,6 @@ public class AirportData implements Serializable {
         this.icao = icao;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -110,12 +104,12 @@ public class AirportData implements Serializable {
         this.latitude = latitude;
     }
 
-    public int getTimezone() {
-        return timezone;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setTimezone(int timezone) {
-        this.timezone = timezone;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public int getAltitude() {
@@ -126,6 +120,14 @@ public class AirportData implements Serializable {
         this.altitude = altitude;
     }
 
+    public int getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(int timezone) {
+        this.timezone = timezone;
+    }
+
     public String getDst() {
         return dst;
     }
@@ -134,12 +136,12 @@ public class AirportData implements Serializable {
         this.dst = dst;
     }
 
-    public String getSource() {
-        return source;
+    public String getDatabaseTimezone() {
+        return databaseTimezone;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setDatabaseTimezone(String databaseTimezone) {
+        this.databaseTimezone = databaseTimezone;
     }
 
     public String getType() {
@@ -150,20 +152,19 @@ public class AirportData implements Serializable {
         this.type = type;
     }
 
-    public String getDatabaseTimezone() {
-        return databaseTimezone;
+    public String getSource() {
+        return source;
     }
 
-    public void setDatabaseTimezone(String databaseTimezone) {
-        this.databaseTimezone = databaseTimezone;
-
+    public void setSource(String source) {
+        this.source = source;
     }
 
-    public Timestamp  getCreated_at() {
+    public Timestamp getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Timestamp  created_at) {
+    public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
     }
 }

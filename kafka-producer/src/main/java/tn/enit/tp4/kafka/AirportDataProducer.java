@@ -4,6 +4,8 @@ import kafka.producer.ProducerConfig;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Properties;
 import java.util.*;
 
@@ -28,7 +30,7 @@ public class AirportDataProducer {
         while (true) {
             AirportData airport = createRandomAirportData(random);
             producer.send(new KeyedMessage<>(topic,airport));
-            Thread.sleep(random.nextInt(5000 - 1000) + 1000); // Random delay between 1-5 seconds
+            Thread.sleep(8000); //  delay 8 seconds
         }
     }
 
@@ -64,8 +66,9 @@ public class AirportDataProducer {
         String databaseTimezone = countryToTimezone.get(country); // Récupération du fuseau horaire
         String type = "airport";
         String source = "OurAirports";
+        Timestamp created_at = new Timestamp(System.currentTimeMillis());
         return new AirportData(airportId, name, city, country, iata, icao, latitude, longitude,
-                altitude, timezone, dst, databaseTimezone, type, source);
+                altitude, timezone, dst, databaseTimezone, type, source,created_at);
     }
 
 

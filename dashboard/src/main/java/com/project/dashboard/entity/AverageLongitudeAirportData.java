@@ -1,17 +1,22 @@
-package tn.enit.tp4;
+package com.project.dashboard.entity;
+
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
-
-public class AverageData implements Serializable {
+@Table("avg_longitude_per_country")
+public class AverageLongitudeAirportData implements Serializable {
+    @PrimaryKeyColumn(name = "id", type = PrimaryKeyType.PARTITIONED)
     private UUID id;
     private String country;
     private double average;
     private Timestamp timestamp;
 
-    public AverageData(String country, double average, Timestamp timestamp) {
+    public AverageLongitudeAirportData(String country, double average, Timestamp timestamp) {
         this.id = UUID.randomUUID();
         this.country = country;
         this.average = average;

@@ -12,6 +12,7 @@ import com.datastax.spark.connector.japi.DStreamJavaFunctions;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import tn.enit.tp4.AirportData;
 
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,7 @@ public class ProcessorUtils {
         columnNameMappings.put("databaseTimezone", "databasetimezone");
         columnNameMappings.put("type", "type");
         columnNameMappings.put("source", "source");
+        columnNameMappings.put("created_at", "created_at");
 
         // Save the data stream to Cassandra using the mappings
         DStreamJavaFunctions<AirportData> cassandraWriter = javaFunctions(dataStream);
@@ -93,7 +95,8 @@ public class ProcessorUtils {
                 row.getAs("dst"),                // String
                 row.getAs("databaseTimezone"),   // String
                 row.getAs("type"),               // String
-                row.getAs("source")              // String
+                row.getAs("source")  ,
+                row.getAs("created_at")// String
         );
     }
 
@@ -115,7 +118,9 @@ public class ProcessorUtils {
                 .add("dst", DataTypes.StringType)
                 .add("databaseTimezone", DataTypes.StringType)
                 .add("type", DataTypes.StringType)
-                .add("source", DataTypes.StringType);
+                .add("source", DataTypes.StringType)
+                .add("created_at", DataTypes.TimestampType);
+
 
         // Read data with schema enforcement
         Dataset<Row> dataFrame = sparkSession.read().schema(schema).parquet(saveFile);
@@ -151,7 +156,7 @@ public class ProcessorUtils {
             }
 
             double average = total / count;
-            averages.add(new AverageData(country, average, new Date()));
+            averages.add(new AverageData(country, average,  new Timestamp(System.currentTimeMillis())));
         });
 
         return averages;

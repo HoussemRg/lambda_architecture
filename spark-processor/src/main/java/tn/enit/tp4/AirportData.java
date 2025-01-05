@@ -1,6 +1,7 @@
 package tn.enit.tp4;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -19,12 +20,14 @@ public class AirportData implements Serializable {
     private String databaseTimezone;
     private String type;
     private String source;
+    private Timestamp created_at ;
+
 
     public AirportData() {}
 
     public AirportData(int airportId, String name, String city, String country, String iata, String icao,
                        double latitude, double longitude, int altitude, int timezone,
-                       String dst, String databaseTimezone, String type, String source) {
+                       String dst, String databaseTimezone, String type, String source,Timestamp created_at ) {
         this.airportId = airportId;
         this.name = name;
         this.city = city;
@@ -39,6 +42,7 @@ public class AirportData implements Serializable {
         this.databaseTimezone = databaseTimezone;
         this.type = type;
         this.source = source;
+        this.created_at  = created_at ;
     }
 
     // Getters and Setters
@@ -56,4 +60,12 @@ public class AirportData implements Serializable {
     public String getDatabaseTimezone() { return databaseTimezone; }
     public String getType() { return type; }
     public String getSource() { return source; }
+
+    public Timestamp getCreated_at() {
+        return created_at ;
+    }
+
+    public void setCreated_at(Timestamp created_at ) {
+        this.created_at  = created_at ;
+    }
 }
